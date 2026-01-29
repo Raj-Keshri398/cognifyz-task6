@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Task 6</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        section {
+            min-height: 70vh;
+            padding: 80px 0;
+        }
+
+        .view-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .view-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+        }
+
+        footer {
+            background: #0d6efd;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+
+    <!-- 🔹 NAVBAR -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">Cognifyz</a>
+
+            <!-- Toggle Button -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#view">View</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contact">Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-light ms-lg-3" href="/register">Register</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-warning ms-lg-3" href="/login">Login</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- VIEW SECTION -->
+    <section id="view" class="bg-light">
+        <div class="container">
+            <h2 class="text-center text-primary mb-5">How to Register</h2>
+
+            <div class="row text-center">
+                <div class="col-12 col-lg-4 mb-4">
+                    <div class="card view-card p-4 h-100">
+                        <h5>Step 1</h5>
+                        <p>Click on the Register button available in the navigation bar.</p>
+                    </div>
+                </div>
+
+                <div class="col-12 col-lg-4 mb-4">
+                    <div class="card view-card p-4 h-100">
+                        <h5>Step 2</h5>
+                        <p>Fill Name, Email, Phone Number, Address and Pincode carefully.</p>
+                    </div>
+                </div>
+
+                <div class="col-12 col-lg-4 mb-4">
+                    <div class="card view-card p-4 h-100">
+                        <h5>Step 3</h5>
+                        <p>Submit the form to generate a unique User ID.</p>
+                    </div>
+                </div>
+
+                <div class="col-12 col-lg-4 mb-4">
+                    <div class="card view-card p-4 h-100">
+                        <h5>Step 4</h5>
+                        <p>After registration, view all users by clicking the Users button in the navbar.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ABOUT SECTION -->
+    <section id="about">
+        <div class="container">
+            <h2 class="text-center text-primary mb-4">About</h2>
+            <p class="text-center">
+                This landing page is created as part of the Full Stack Development Internship at
+                <b>Cognifyz Technologies</b>.  
+                The project demonstrates Bootstrap-based responsive design, smooth navigation,
+                server-side rendering using Express & EJS, and dynamic ID generation.
+            </p>
+        </div>
+    </section>
+
+    <!-- CONTACT SECTION -->
+    <section id="contact" class="bg-light">
+        <div class="container text-center">
+            <h2 class="text-primary mb-4">Contact</h2>
+            <p>Email: contact@cognifyz.com</p>
+            <p>Phone: +91 9876543210</p>
+            <p>Website: www.cognifyz.com</p>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="text-center p-3">
+        © 2026 Cognifyz Technologies
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

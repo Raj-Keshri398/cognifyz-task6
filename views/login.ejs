@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>User Login</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background: #f1f5f9;
+            min-height: 100vh;
+        }
+
+        .page-wrapper {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+        }
+
+        .login-card {
+            width: 100%;
+            max-width: 450px;
+            padding: 30px;
+            border-radius: 12px;
+        }
+
+        .error {
+            font-size: 12px;
+            color: red;
+        }
+
+        .success {
+            border-color: green;
+        }
+
+        .invalid {
+            border-color: red;
+        }
+
+        @media (max-width: 991px) {
+            .login-card {
+                max-width: 100%;
+                min-height: 100vh;
+                border-radius: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="page-wrapper">
+    <div class="card shadow login-card">
+
+        <h3 class="text-center text-primary mb-4">User Login</h3>
+
+        <form id="loginForm" method="post" action="/login">
+
+            <!-- Email -->
+            <input
+                id="email"
+                name="email"
+                type="email"
+                class="form-control mb-1"
+                placeholder="Email"
+                required
+            >
+            <div class="error" id="emailErr"></div>
+
+            <!-- Password -->
+            <input
+                id="password"
+                name="password"
+                type="password"
+                class="form-control mb-1"
+                placeholder="Password"
+                required
+            >
+            <div class="error" id="passErr"></div>
+
+            <!-- Submit -->
+            <button
+                id="submitBtn"
+                type="submit"
+                class="btn btn-primary w-100 mt-3"
+                disabled
+            >
+                Login
+            </button>
+
+            <!-- Back -->
+            <a href="/" class="btn btn-outline-secondary w-100 mt-2">
+                Back
+            </a>
+        </form>
+
+        <div class="text-center mt-3">
+            <a href="/register">Don't have an account? Register</a>
+        </div>
+    </div>
+</div>
+
+<script>
+const emailInput = document.getElementById("email");
+const passwordInput = document.getElementById("password");
+const submitBtn = document.getElementById("submitBtn");
+
+const emailErr = document.getElementById("emailErr");
+const passErr = document.getElementById("passErr");
+
+/* ---------- VALIDATION ---------- */
+function validateLogin() {
+    let valid = true;
+
+    const emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,}$/;
+
+    if (!emailPattern.test(emailInput.value)) {
+        emailInput.classList.add("invalid");
+        emailInput.classList.remove("success");
+        emailErr.innerText = "Invalid email format";
+        valid = false;
+    } else {
+        emailInput.classList.add("success");
+        emailInput.classList.remove("invalid");
+        emailErr.innerText = "";
+    }
+
+    if (passwordInput.value.length < 6) {
+        passwordInput.classList.add("invalid");
+        passwordInput.classList.remove("success");
+        passErr.innerText = "Password must be at least 6 characters";
+        valid = false;
+    } else {
+        passwordInput.classList.add("success");
+        passwordInput.classList.remove("invalid");
+        passErr.innerText = "";
+    }
+
+    submitBtn.disabled = !valid;
+}
+
+document.getElementById("loginForm").addEventListener("input", validateLogin);
+</script>
+
+</body>
+</html>

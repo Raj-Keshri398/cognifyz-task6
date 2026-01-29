@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>User Registration</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background: #f1f5f9;
+            min-height: 100vh;
+        }
+
+        .page-wrapper {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+        }
+
+        .register-card {
+            width: 100%;
+            max-width: 520px;
+            padding: 25px;
+            border-radius: 10px;
+        }
+
+        .error {
+            font-size: 12px;
+            color: red;
+        }
+
+        .success {
+            border-color: green;
+        }
+
+        .invalid {
+            border-color: red;
+        }
+
+        .strength {
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        @media (max-width: 991px) {
+            .register-card {
+                max-width: 100%;
+                min-height: 100vh;
+                border-radius: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="page-wrapper">
+    <div class="card shadow register-card">
+        <h3 class="text-center text-primary mb-4">User Registration</h3>
+
+        
+        <form onsubmit="submitForm(event)">
+
+            <input id="name" name="name" class="form-control mb-1" placeholder="Name" required>
+            <div class="error" id="nameErr"></div>
+
+            <input id="email" name="email" class="form-control mb-1" placeholder="Email" required>
+            <div class="error" id="emailErr"></div>
+
+            <input id="phone" name="phone" class="form-control mb-1" placeholder="Phone Number">
+            <div class="error" id="phoneErr"></div>
+
+            <textarea id="address" name="address" class="form-control mb-1" placeholder="Address" required></textarea>
+            <div class="error" id="addressErr"></div>
+
+            <input id="pincode" name="pincode" class="form-control mb-1" placeholder="Pincode">
+            <div class="error" id="pincodeErr"></div>
+
+            <input id="password" name="password" type="password" class="form-control mb-1" placeholder="Password">
+            <div class="strength" id="passStrength"></div>
+
+            <input id="confirmPassword" type="password" class="form-control mb-1" placeholder="Confirm Password">
+            <div class="error" id="confirmErr"></div>
+
+            <button id="submitBtn" class="btn btn-success w-100 mt-3" disabled>
+                Register
+            </button>
+            <a href="/" class="btn btn-outline-secondary w-100 mt-2">
+                Back
+            </a>
+        </form>
+        <div class="text-center mt-3">
+            <a href="/login">Already have an account? Login here.</a>
+        </div>
+    </div>
+</div>
+
+<script>
+const emailInput = document.getElementById("email");
+const phoneInput = document.getElementById("phone");
+const pincodeInput = document.getElementById("pincode");
+const passwordInput = document.getElementById("password");
+const confirmInput = document.getElementById("confirmPassword");
+const submitBtn = document.getElementById("submitBtn");
+
+const emailErr = document.getElementById("emailErr");
+const phoneErr = document.getElementById("phoneErr");
+const pincodeErr = document.getElementById("pincodeErr");
+const passStrength = document.getElementById("passStrength");
+const confirmErr = document.getElementById("confirmErr");
+
+/* -------- VALIDATION -------- */
+function validateForm() {
+    let valid = true;
+
+    const emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,}$/;
+    const passPattern = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/;
+
+    const emailOk = emailPattern.test(emailInput.value);
+    const phoneOk = phoneInput.value.length === 10;
+    const pinOk = pincodeInput.value.length === 6;
+    const passOk = passPattern.test(passwordInput.value);
+    const confirmOk = passwordInput.value === confirmInput.value;
+
+    setField(emailInput, emailOk, emailErr, "Invalid email");
+    setField(phoneInput, phoneOk, phoneErr, "Phone must be 10 digits");
+    setField(pincodeInput, pinOk, pincodeErr, "Pincode must be 6 digits");
+
+    if (!passOk) {
+        passStrength.innerText = "Weak password";
+        passStrength.style.color = "red";
+        valid = false;
+    } else {
+        passStrength.innerText = "Strong password";
+        passStrength.style.color = "green";
+    }
+
+    if (!confirmOk) {
+        confirmErr.innerText = "Passwords do not match";
+        valid = false;
+    } else {
+        confirmErr.innerText = "";
+    }
+
+    submitBtn.disabled = !valid;
+    return valid;
+}
+
+function setField(input, condition, errEl, msg) {
+    if (!condition) {
+        input.classList.add("invalid");
+        input.classList.remove("success");
+        errEl.innerText = msg;
+    } else {
+        input.classList.add("success");
+        input.classList.remove("invalid");
+        errEl.innerText = "";
+    }
+}
+
+document.querySelector("form").addEventListener("input", validateForm);
+
+/* -------- API SUBMIT -------- */
+function submitForm(e) {
+    e.preventDefault();
+
+    if (!validateForm()) return;
+
+    const data = {
+        name: document.getElementById("name").value,
+        email: emailInput.value,
+        phone: phoneInput.value,
+        address: document.getElementById("address").value,
+        pincode: pincodeInput.value,
+        password: passwordInput.value
+    };
+
+    fetch("/register", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(result => {
+        if (result.success) {
+            window.location.href = "/login";
+        } else {
+            alert("Registration failed: " + result.message);
+        }
+    });
+}
+</script>
+
+</body>
+</html>

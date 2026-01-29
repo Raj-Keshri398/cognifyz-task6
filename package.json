@@ -1,0 +1,24 @@
+{
+  "name": "cognifyz-task6",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "keywords": ["nodejs", "express", "ejs", "mysql", "authentication"],
+  "author": "George Tifley",
+  "license": "ISC",
+  "description": "User authentication system using Node.js, Express, EJS, MySQL",
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "ejs": "^4.0.1",
+    "express": "^5.2.1",
+    "express-session": "^1.19.0",
+    "mysql2": "^3.16.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.11"
+  }
+}
