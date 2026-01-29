@@ -1,3 +1,6 @@
+import dotenv from "dotenv";
+dotenv.config();
+
 import express from "express";
 import path from "path";
 import { fileURLToPath } from "url";
@@ -11,13 +14,13 @@ const app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-/* IMPORTANT (JSON + FORM BOTH) */
-app.use(express.json());                  // Fetch API JSON
+/* ---------- MIDDLEWARE ---------- */
+app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 /* ---------- SESSION ---------- */
 app.use(session({
-    secret: "task6_secret",
+    secret: process.env.SESSION_SECRET || "task6_secret",
     resave: false,
     saveUninitialized: false
 }));
@@ -43,7 +46,7 @@ app.get("/login", (req, res) => {
     res.render("login");
 });
 
-/* ---------- REGISTER (TASK-6) ---------- */
+/* ---------- REGISTER ---------- */
 app.post("/register", async (req, res) => {
     const { name, email, phone, address, pincode, password } = req.body;
 
@@ -59,23 +62,20 @@ app.post("/register", async (req, res) => {
             VALUES (?,?,?,?,?,?)
         `;
 
-        db.query(
-            sql,
-            [name, email, phone, address, pincode, hashedPassword],
-            (err) => {
-                if (err) {
-                    return res.json({
-                        success: false,
-                        message: "User already exists"
-                    });
-                }
-
+        db.query(sql, [name, email, phone, address, pincode, hashedPassword], err => {
+            if (err) {
                 return res.json({
-                    success: true,
-                    message: "Registered successfully"
+                    success: false,
+                    message: "User already exists"
                 });
             }
-        );
+
+            return res.json({
+                success: true,
+                message: "Registered successfully"
+            });
+        });
+
     } catch (err) {
         res.json({ success: false, message: "Server error" });
     }
@@ -85,32 +85,28 @@ app.post("/register", async (req, res) => {
 app.post("/login", (req, res) => {
     const { email, password } = req.body;
 
-    db.query(
-        "SELECT * FROM users WHERE email=?",
-        [email],
-        async (err, result) => {
-            if (result.length === 0) {
-                return res.send("Invalid email or password");
-            }
+    db.query("SELECT * FROM users WHERE email=?", [email], async (err, result) => {
 
-            const match = await bcrypt.compare(password, result[0].password);
-            if (!match) {
-                return res.send("Invalid email or password");
-            }
-
-            // save session
-            req.session.user = {
-                id: result[0].id,
-                name: result[0].name,
-                email: result[0].email
-            };
-
-            res.redirect("/dashboard");
+        if (result.length === 0) {
+            return res.send("Invalid email or password");
         }
-    );
+
+        const match = await bcrypt.compare(password, result[0].password);
+        if (!match) {
+            return res.send("Invalid email or password");
+        }
+
+        req.session.user = {
+            id: result[0].id,
+            name: result[0].name,
+            email: result[0].email
+        };
+
+        res.redirect("/dashboard");
+    });
 });
 
-/* ---------- PROTECTED DASHBOARD ---------- */
+/* ---------- DASHBOARD ---------- */
 app.get("/dashboard", (req, res) => {
     if (!req.session.user) {
         return res.redirect("/login");
@@ -132,6 +128,7 @@ app.get("/logout", (req, res) => {
 });
 
 /* ---------- SERVER ---------- */
-app.listen(3200, () => {
-    console.log("Task-6 server running on port 3200");
+const PORT = process.env.PORT || 3200;
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
 });
