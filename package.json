@@ -7,12 +7,19 @@
     "start": "node app.js",
     "dev": "nodemon app.js"
   },
-  "keywords": ["nodejs", "express", "ejs", "mysql", "authentication"],
+  "keywords": [
+    "nodejs",
+    "express",
+    "ejs",
+    "mysql",
+    "authentication"
+  ],
   "author": "George Tifley",
   "license": "ISC",
   "description": "User authentication system using Node.js, Express, EJS, MySQL",
   "dependencies": {
     "bcryptjs": "^3.0.3",
+    "dotenv": "^17.2.3",
     "ejs": "^4.0.1",
     "express": "^5.2.1",
     "express-session": "^1.19.0",
